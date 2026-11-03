@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Калькулятор под ключ – черновик</title>
+<meta name="description" content="Черновик калькулятора итоговой цены привоза авто в Беларусь на примере Zeekr 9X. Ставки открыты для правки – проверяем на реальной сделке.">
+<style>
+  :root{
+    --bg:#0e1016; --panel:#161922; --panel-2:#1c2029; --line:rgba(255,255,255,.1);
+    --ink:#eceef2; --mute:#9096a3; --gold:#c9a227; --warn:#e0a33c; --ok:#4caf7d;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px 72px}
+
+  header{padding:40px 0 24px;border-bottom:1px solid var(--line);margin-bottom:28px}
+  .kicker{color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+          font-size:12px;margin:0 0 10px}
+  h1{font-size:clamp(26px,4.5vw,40px);line-height:1.12;margin:0 0 12px;letter-spacing:-.02em}
+  .sub{color:var(--mute);margin:0;max-width:64ch}
+
+  .warn{background:rgba(224,163,60,.12);border:1px solid rgba(224,163,60,.35);
+        border-radius:14px;padding:16px 18px;margin:0 0 28px}
+  .warn b{color:#f0c674}
+  .warn p{margin:0 0 10px}
+  .warn p:last-child{margin:0}
+
+  h2{font-size:clamp(19px,2.6vw,25px);margin:40px 0 6px;letter-spacing:-.01em}
+  h2 + .hint{color:var(--mute);margin:0 0 18px;font-size:15px;max-width:68ch}
+  h3{font-size:16px;margin:0 0 14px;text-transform:uppercase;letter-spacing:.06em;
+     color:var(--mute);font-weight:600}
+
+  .cols{display:grid;gap:18px}
+  @media(min-width:900px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:28px;align-items:start}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
+
+  .trims{display:grid;gap:8px;margin:0 0 20px}
+  .trim{display:grid;grid-template-columns:1fr auto;gap:2px 12px;text-align:left;
+        padding:13px 15px;border-radius:12px;cursor:pointer;color:inherit;font:inherit;
+        background:rgba(255,255,255,.04);border:1px solid var(--line)}
+  .trim:hover{border-color:rgba(255,255,255,.3)}
+  .trim.on{border-color:var(--gold);background:rgba(201,162,39,.1)}
+  .trim .nm{font-weight:600}
+  .trim .tg{grid-column:1;font-size:13px;color:var(--mute)}
+  .trim .pr{grid-column:2;grid-row:1/span 2;align-self:center;font-variant-numeric:tabular-nums;
+            white-space:nowrap}
+
+  .field{display:grid;gap:5px;margin:0 0 14px}
+  .field label{font-size:13.5px;color:var(--mute)}
+  .field .row{display:flex;gap:8px;align-items:center}
+  input[type=number],input[type=text],select{
+    width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
+    padding:10px 12px;color:var(--ink);font:inherit;font-variant-numeric:tabular-nums}
+  input:focus,select:focus{outline:none;border-color:var(--gold)}
+  .unit{color:var(--mute);font-size:14px;white-space:nowrap}
+
+  .seg{display:flex;gap:6px;margin:0 0 18px}
+  .seg button{flex:1;padding:10px;border-radius:10px;cursor:pointer;font:inherit;color:inherit;
+              background:rgba(255,255,255,.04);border:1px solid var(--line)}
+  .seg button.on{border-color:var(--gold);background:rgba(201,162,39,.12)}
+
+  table{width:100%;border-collapse:collapse;margin:0}
+  th,td{text-align:left;padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mute);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.total td{border-bottom:0;padding-top:16px;font-size:clamp(19px,2.4vw,24px);font-weight:700}
+  tr.total td.lbl{font-size:15px;font-weight:600;color:var(--mute);vertical-align:bottom}
+  td small{display:block;color:var(--mute);font-size:12.5px;font-weight:400;margin-top:3px}
+
+  .out{position:sticky;top:16px}
+  .out .big{font-size:clamp(28px,4vw,38px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+  .out .big-sub{color:var(--mute);font-size:14px;margin-top:4px}
+
+  details{margin:28px 0 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+          padding:16px 18px}
+  summary{cursor:pointer;font-weight:600}
+  details .grid2{display:grid;gap:14px;margin-top:16px}
+  @media(min-width:700px){details .grid2{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 24px}}
+
+  .q{background:var(--panel-2);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;
+     padding:16px 18px;margin:28px 0 0}
+  .q ol{margin:10px 0 0;padding-left:20px}
+  .q li{margin:0 0 9px}
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kicker">Evolution Car · черновик, не на сайте</p>
+  <h1>Калькулятор цены под ключ</h1>
+  <p class="sub">Собран на примере Zeekr 9X. Все ставки открыты для правки – впиши свои
+  и проверь на сделке, которую считал руками. Когда цифры сойдутся, я поставлю это на сайт.</p>
+</header>
+
+<div class="warn">
+  <p><b>Почему ставки не зашиты наглухо.</b> Я искал их в открытых источниках – и они
+  противоречат друг другу в главном. По электромобилям: одни пишут, что пошлина 0 % по квоте,
+  другие – что квота на 2026 год исчерпана 5 сентября и теперь 15 %. По НДС: одни говорят 0 %
+  до 2028 года, другие – 20 % на общих основаниях. Утильсбор для юрлица в одном примере
+  624,92 BYN, в другом 44 374,56 BYN.</p>
+  <p>Официальных данных ГТК в выдаче нет, все источники – сайты таких же перевозчиков.
+  Ставить такие цифры в калькулятор, по которому человек примет решение на 70 тысяч долларов,
+  нельзя. <b>Твои рабочие цифры точнее всего, что я найду в интернете</b> – впиши их ниже.</p>
+</div>
+
+<div class="cols">
+  <div>
+    <div class="card">
+      <h3>Автомобиль</h3>
+      <div class="trims" id="trims"></div>
+
+      <div class="field">
+        <label for="age">Возраст машины</label>
+        <select id="age">
+          <option value="new" selected>Новая, до 3 лет</option>
+          <option value="3to5">От 3 до 5 лет</option>
+          <option value="old">Старше 5 лет</option>
+        </select>
+      </div>
+
+      <h3 style="margin-top:22px">На кого оформляем</h3>
+      <div class="seg" id="who">
+        <button type="button" data-who="fiz" class="on">Физлицо</button>
+        <button type="button" data-who="ur">Юрлицо</button>
+      </div>
+    </div>
+
+    <details open>
+      <summary>Ставки и курсы – правь под себя</summary>
+      <div class="grid2">
+        <div class="field">
+          <label for="duty">Таможенная пошлина, % от стоимости</label>
+          <div class="row"><input type="number" id="duty" value="15" step="0.5" min="0"><span class="unit">%</span></div>
+        </div>
+        <div class="field">
+          <label for="vat">НДС, %</label>
+          <div class="row"><input type="number" id="vat" value="20" step="1" min="0"><span class="unit">%</span></div>
+        </div>
+        <div class="field">
+          <label for="util">Утилизационный сбор</label>
+          <div class="row"><input type="number" id="util" value="624.92" step="0.01" min="0"><span class="unit">BYN</span></div>
+        </div>
+        <div class="field">
+          <label for="fee">Таможенный сбор за оформление</label>
+          <div class="row"><input type="number" id="fee" value="120" step="1" min="0"><span class="unit">BYN</span></div>
+        </div>
+        <div class="field">
+          <label for="delivery">Доставка из Китая</label>
+          <div class="row"><input type="number" id="delivery" value="3500" step="50" min="0"><span class="unit">$</span></div>
+        </div>
+        <div class="field">
+          <label for="cert">Сертификация и постановка на учёт</label>
+          <div class="row"><input type="number" id="cert" value="900" step="50" min="0"><span class="unit">$</span></div>
+        </div>
+        <div class="field">
+          <label for="service">Наша работа</label>
+          <div class="row"><input type="number" id="service" value="2000" step="100" min="0"><span class="unit">$</span></div>
+        </div>
+        <div class="field">
+          <label for="rateCny">Курс: юаней за доллар</label>
+          <div class="row"><input type="number" id="rateCny" value="7.12" step="0.01" min="0.01"><span class="unit">¥ / $</span></div>
+        </div>
+        <div class="field">
+          <label for="rateByn">Курс: рублей за доллар</label>
+          <div class="row"><input type="number" id="rateByn" value="3.05" step="0.01" min="0.01"><span class="unit">BYN / $</span></div>
+        </div>
+        <div class="field">
+          <label for="custom">Своя цена машины в Китае (если не из списка)</label>
+          <div class="row"><input type="number" id="custom" placeholder="например 520000" step="1000" min="0"><span class="unit">¥</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card out">
+    <h3>Под ключ в Минске</h3>
+    <div class="big" id="total">–</div>
+    <div class="big-sub" id="totalByn"></div>
+
+    <table style="margin-top:20px">
+      <thead><tr><th>Что</th><th class="n">Сколько</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</div>
+
+<h2>Что мне нужно от тебя, чтобы поставить это на сайт</h2>
+<p class="hint">Семь цифр. Когда они будут твои, а не из интернета, калькулятор можно показывать клиентам.</p>
+
+<div class="q">
+  <b>Подтверди или поправь:</b>
+  <ol>
+    <li><b>Пошлина на гибрид с подзарядкой</b> (9X именно такой) – 15 % от стоимости или считается за кубический сантиметр?</li>
+    <li><b>НДС</b> – 20 % или всё же 0 % по электро-льготе? И распространяется ли льгота на гибриды.</li>
+    <li><b>Утильсбор</b> – сколько реально платите за такую машину: физлицом и юрлицом.</li>
+    <li><b>Доставка из Китая</b> – средняя сумма на такой кузов.</li>
+    <li><b>Сертификация и постановка на учёт</b> – сколько выходит.</li>
+    <li><b>Ваша работа</b> – ставите фиксированную сумму или процент.</li>
+    <li><b>На кого обычно оформляете</b> – на покупателя-физлицо или на компанию. От этого ставки разные.</li>
+  </ol>
+</div>
+
+<h2>Как это будет на сайте</h2>
+<p class="hint">Здесь черновик на одной модели. На сайте он встанет иначе и будет работать на все 129 карточек.</p>
+<ul>
+  <li>Отдельная страница <b>/kalkulyator/</b> – туда ведут ссылки из статей про растаможку, утильсбор и пошлину. Это те статьи, где человек как раз ищет сумму.</li>
+  <li>Блок прямо в карточке автомобиля: цена подставляется из карточки, человек не вводит ничего.</li>
+  <li>Расчёт уходит в заявку текстом – менеджер видит, что именно считал клиент, и не переспрашивает.</li>
+  <li>Ставки лежат в одном файле с датой и источником. Поменялись – правим в одном месте, пересчитывается везде.</li>
+</ul>
+
+<footer>
+  <p>Черновик от 3 ноября 2026. Цены Zeekr 9X – китайские розничные за голую машину, июль 2026
+  (Max 465 900 ¥, Ultra 485 900 ¥, Hyper 559 900 ¥). Ставки в расчёте – не проверены, стоят
+  как заготовка под твои цифры. Страница закрыта от индексации.</p>
+</footer>
+
+</div>
+
+<script>
+// Цены – китайские розничные за голую машину, июль 2026. Значения 2025 года
+// выше и устарели: в Китае была корректировка.
+const TRIMS = [
+  { id: 'max',   name: '9X Max',   tag: 'Начальная',          cny: 465900 },
+  { id: 'ultra', name: '9X Ultra', tag: 'Берут чаще всего',   cny: 485900 },
+  { id: 'hyper', name: '9X Hyper', tag: 'Максимальная',       cny: 559900 }
+];
+
+let trimId = 'max';
+let who = 'fiz';
+
+const $ = (id) => document.getElementById(id);
+const num = (id) => parseFloat($(id).value) || 0;
+const money = (v, cur) => Math.round(v).toLocaleString('ru-RU') + ' ' + cur;
+
+function drawTrims() {
+  $('trims').innerHTML = TRIMS.map((t) => `
+    <button type="button" class="trim ${t.id === trimId ? 'on' : ''}" data-trim="${t.id}">
+      <span class="nm">${t.name}</span>
+      <span class="tg">${t.tag}</span>
+      <span class="pr">${t.cny.toLocaleString('ru-RU')} ¥</span>
+    </button>`).join('');
+  $('trims').querySelectorAll('[data-trim]').forEach((b) => {
+    b.onclick = () => { trimId = b.dataset.trim; drawTrims(); calc(); };
+  });
+}
+
+function calc() {
+  const rateCny = num('rateCny') || 7.12;
+  const rateByn = num('rateByn') || 3.05;
+  const custom = num('custom');
+  const cny = custom > 0 ? custom : TRIMS.find((t) => t.id === trimId).cny;
+
+  const carUsd = cny / rateCny;
+  const dutyUsd = carUsd * num('duty') / 100;
+  // НДС считается на стоимость вместе с пошлиной - так его берут при оформлении товара
+  const vatUsd = (carUsd + dutyUsd) * num('vat') / 100;
+  const utilUsd = num('util') / rateByn;
+  const feeUsd = num('fee') / rateByn;
+  const deliveryUsd = num('delivery');
+  const certUsd = num('cert');
+  const serviceUsd = num('service');
+
+  const rows = [
+    ['Машина в Китае', carUsd, `${cny.toLocaleString('ru-RU')} ¥ по курсу ${rateCny} ¥/$`],
+    ['Доставка', deliveryUsd, ''],
+    ['Таможенная пошлина', dutyUsd, `${num('duty')} % от стоимости машины`],
+    ['НДС', vatUsd, `${num('vat')} % на стоимость с пошлиной`],
+    ['Утилизационный сбор', utilUsd, `${num('util').toLocaleString('ru-RU')} BYN`],
+    ['Таможенный сбор', feeUsd, `${num('fee').toLocaleString('ru-RU')} BYN`],
+    ['Сертификация и учёт', certUsd, ''],
+    ['Наша работа', serviceUsd, '']
+  ];
+
+  const total = rows.reduce((s, r) => s + r[1], 0);
+
+  $('rows').innerHTML = rows.map(([label, v, note]) => `
+    <tr><td>${label}${note ? `<small>${note}</small>` : ''}</td>
+        <td class="n">${money(v, '$')}</td></tr>`).join('')
+    + `<tr class="total"><td class="lbl">Итого под ключ</td>
+         <td class="n">${money(total, '$')}</td></tr>`;
+
+  $('total').textContent = money(total, '$');
+  $('totalByn').textContent = 'примерно ' + money(total * rateByn, 'BYN')
+    + ' · оформление на ' + (who === 'fiz' ? 'физлицо' : 'юрлицо');
+}
+
+$('who').querySelectorAll('[data-who]').forEach((b) => {
+  b.onclick = () => {
+    who = b.dataset.who;
+    $('who').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
+    // у юрлица свой утильсбор и обычно другая ставка - подставляем заготовку,
+    // чтобы было видно разницу; точные цифры владелец впишет сам
+    $('util').value = who === 'ur' ? '44374.56' : '624.92';
+    calc();
+  };
+});
+
+document.querySelectorAll('input, select').forEach((el) => {
+  el.addEventListener('input', calc);
+  el.addEventListener('change', calc);
+});
+
+drawTrims();
+calc();
+</script>
+</body>
+</html>
