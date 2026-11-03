@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Задачи ноября</title>
+<meta name="description" content="Чек-лист задач Evolution Car на ноябрь: задача, неделя, отметка о готовности, комментарии и ссылки на результат.">
+<style>
+  :root{
+    --bg:#0e1016; --panel:#161922; --panel-2:#1c2029; --line:rgba(255,255,255,.1);
+    --ink:#eceef2; --mute:#9096a3; --gold:#c9a227; --ok:#4caf7d; --warn:#e0a33c;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15.5px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 14px 70px}
+
+  header{padding:34px 0 20px;border-bottom:1px solid var(--line);margin-bottom:20px}
+  .kicker{color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;margin:0 0 9px}
+  h1{font-size:clamp(25px,4vw,36px);line-height:1.12;margin:0 0 10px;letter-spacing:-.02em}
+  .sub{color:var(--mute);margin:0;max-width:70ch;font-size:15px}
+
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
+  .tabs a{padding:9px 15px;border-radius:10px;text-decoration:none;color:var(--ink);font-size:14.5px;
+          background:rgba(255,255,255,.04);border:1px solid var(--line)}
+  .tabs a:hover{border-color:rgba(255,255,255,.3)}
+  .tabs a.on{background:rgba(201,162,39,.12);border-color:var(--gold);color:var(--gold);font-weight:600}
+
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 16px;
+       background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 15px}
+  .bar select,.bar input[type=search]{background:var(--panel-2);border:1px solid var(--line);
+       border-radius:9px;padding:8px 11px;color:var(--ink);font:inherit;font-size:14px}
+  .bar select:focus,.bar input:focus{outline:none;border-color:var(--gold)}
+  .bar .grow{flex:1;min-width:140px}
+  .btn{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:9px;
+       padding:8px 13px;color:var(--ink);font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap}
+  .btn:hover{border-color:rgba(255,255,255,.35)}
+  .btn.gold{background:var(--gold);color:#11131a;border-color:var(--gold);font-weight:600}
+  .btn.gold:hover{filter:brightness(1.08)}
+  .btn.done{background:var(--ok);border-color:var(--ok);color:#06110b}
+
+  .progress{display:flex;align-items:center;gap:12px;margin:0 0 18px;flex-wrap:wrap}
+  .progress .track{flex:1;min-width:180px;height:9px;background:var(--panel-2);border-radius:99px;overflow:hidden;
+                   border:1px solid var(--line)}
+  .progress .fill{height:100%;background:var(--ok);width:0;transition:width .25s ease}
+  .progress .txt{font-size:14px;color:var(--mute);font-variant-numeric:tabular-nums}
+  .progress .txt b{color:var(--ink)}
+
+  .tablewrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:auto}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:900px}
+  thead th{position:sticky;top:0;background:#1b1f28;z-index:2;text-align:left;padding:11px 12px;
+           border-bottom:1px solid var(--line);color:var(--mute);font-size:11.5px;
+           text-transform:uppercase;letter-spacing:.05em;font-weight:600;white-space:nowrap;cursor:pointer;
+           user-select:none}
+  thead th:hover{color:var(--ink)}
+  thead th .ar{opacity:.45;font-size:10px;margin-left:4px}
+  tbody td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:hover{background:rgba(255,255,255,.025)}
+  tbody tr.is-done{opacity:.55}
+  tbody tr.is-done .task{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.35)}
+
+  td.c-num{color:var(--mute);font-variant-numeric:tabular-nums;width:40px;white-space:nowrap}
+  td.c-chk{width:46px;text-align:center}
+  td.c-week{width:92px;white-space:nowrap}
+  td.c-dir{width:132px;white-space:nowrap}
+  td.c-task{min-width:270px}
+  td.c-note{min-width:230px}
+
+  input[type=checkbox]{width:19px;height:19px;accent-color:var(--ok);cursor:pointer;margin-top:1px}
+
+  .task{font-weight:500}
+  .task small{display:block;color:var(--mute);font-weight:400;font-size:13px;margin-top:3px;line-height:1.45}
+
+  .week-chip{display:inline-block;padding:3px 9px;border-radius:7px;font-size:12.5px;font-weight:600;
+             background:rgba(201,162,39,.13);color:#dcb64a;border:1px solid rgba(201,162,39,.28)}
+  .dir-chip{display:inline-block;padding:3px 9px;border-radius:7px;font-size:12.5px;
+            background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--mute)}
+
+  .links{margin:0 0 6px}
+  .links a{display:inline-block;color:var(--gold);font-size:13px;text-decoration:none;
+           border-bottom:1px dotted rgba(201,162,39,.5);margin:0 10px 4px 0}
+  .links a:hover{border-bottom-style:solid}
+  textarea.note{width:100%;min-height:34px;background:var(--panel-2);border:1px solid var(--line);
+                border-radius:8px;padding:7px 9px;color:var(--ink);font:inherit;font-size:13.5px;
+                resize:vertical;line-height:1.45}
+  textarea.note:focus{outline:none;border-color:var(--gold)}
+  textarea.note::placeholder{color:#5e6472}
+
+  .hint{color:var(--mute);font-size:13.5px;margin:14px 0 0;line-height:1.6}
+  .empty{padding:30px;text-align:center;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kicker">Evolution Car · ноябрь 2026</p>
+  <h1>Задачи</h1>
+  <p class="sub">Отмечайте готовое галочкой, в комментарии кладите ссылки на результат.
+  Отметки сохраняются в этом браузере. Ссылки на готовое, которые проставляю я,
+  стоят в строке и видны всем.</p>
+</header>
+
+<nav class="tabs">
+  <a href="../noyabr/">План на ноябрь</a>
+  <a class="on" href="./">Задачи</a>
+  <a href="../">Квартал</a>
+  <a href="../kalkulyator/">Калькулятор</a>
+  <a href="../gpt-image/">ТЗ для нейросети</a>
+</nav>
+
+<div class="bar">
+  <input class="grow" type="search" id="q" placeholder="Поиск по задачам…">
+  <select id="fw"><option value="">Все недели</option></select>
+  <select id="fd"><option value="">Все направления</option></select>
+  <select id="fs">
+    <option value="">Все</option>
+    <option value="no">Не сделано</option>
+    <option value="yes">Сделано</option>
+  </select>
+  <button class="btn" id="copy">Скопировать отчёт</button>
+  <button class="btn" id="reset">Сбросить отметки</button>
+</div>
+
+<div class="progress">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="txt" id="ptxt">–</div>
+</div>
+
+<div class="tablewrap">
+  <table>
+    <thead>
+      <tr>
+        <th data-sort="n">№<span class="ar">↕</span></th>
+        <th data-sort="done">✓<span class="ar">↕</span></th>
+        <th data-sort="week">Неделя<span class="ar">↕</span></th>
+        <th data-sort="dir">Направление<span class="ar">↕</span></th>
+        <th data-sort="task">Задача<span class="ar">↕</span></th>
+        <th>Комментарии и ссылки</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div class="empty" id="empty" hidden>Под фильтр ничего не попало</div>
+</div>
+
+<p class="hint">Галочки и ваши комментарии лежат в этом браузере – на другом компьютере их не будет.
+Чтобы передать статус, нажмите «Скопировать отчёт» и пришлите текст.</p>
+
+<script>
+// Задачи ноября. Порядок и номера не менять – по ним привязаны отметки.
+// Поле done здесь – то, что уже закрыто с нашей стороны; галочка владельца
+// хранится отдельно, в браузере, и может это переопределить.
+const TASKS = [
+  { n: 1,  week: 1, dir: 'Домен',        task: 'Продлить домен evolutioncar.by', note: 'Истекает 13 ноября. Не продлить – сайт выключается целиком вместе с почтой' },
+  { n: 2,  week: 1, dir: 'SEO',          task: '«Купить» и город в заголовки 130 карточек', note: 'Одна правка шаблона на все страницы. Спрос: 135 запросов, 4 770 кликов в квартал' },
+  { n: 3,  week: 1, dir: 'SEO',          task: 'Переобход 218 адресов и блога в Яндексе', note: 'Робот не заходил с 10 октября, новых страниц не видел' },
+  { n: 4,  week: 1, dir: 'SEO',          task: 'Регион «Минск» и счётчик Метрики в Вебмастере', note: 'Без региона Яндекс не считает сайт белорусским' },
+  { n: 5,  week: 1, dir: 'SEO',          task: 'Исправить адрес Nissan Ariya', note: 'Опечатка aryia вместо ariya. 186 кликов в квартал. Менять вместе с редиректом и фидом Google Ads' },
+  { n: 6,  week: 1, dir: 'SEO',          task: 'Замер реального спроса по Беларуси', note: 'Решает, какие статьи писать и какие страницы делать. Платно – нужно ваше слово' },
+  { n: 7,  week: 1, dir: 'Аналитика',    task: 'Анализ ссылочной массы: где сайт размещён', note: 'Снять ссылки из Вебмастера и Search Console, найти ведущие в 404 после переезда' },
+  { n: 8,  week: 1, dir: 'Аналитика',    task: 'Анализ рекламы: Google Ads, Instagram, Метрика, GA4', note: 'Нужны доступы к рекламным кабинетам' },
+  { n: 9,  week: 1, dir: 'Ссылки',       task: 'Карта ссылок: список площадок на квартал', note: 'Карты, av.by, Onliner, Куфар, чаты по маркам, местные СМИ' },
+  { n: 10, week: 1, dir: 'Контент',      task: '5 статей', note: 'Растаможка, утильсбор, пошлина, сроки, документы – спрос очевиден без замера' },
+
+  { n: 11, week: 2, dir: 'SEO',          task: 'Русские написания моделей на 129 карточках', note: '«джили префейс», «зикр», «аватр», «линк энд ко» – около 3 000 кликов в квартал' },
+  { n: 12, week: 2, dir: 'SEO',          task: 'Вопросы и ответы на 20 карточек с большим спросом', note: 'Сейчас их нет ни на одной карточке. Для поиска, голосового поиска и ответов ИИ' },
+  { n: 13, week: 2, dir: 'Гео-карты',    task: 'Отдельная карточка сервиса в Яндексе, Google и 2ГИС', note: 'Нужны: адрес сервиса, телефон, часы, услуги с ценами' },
+  { n: 14, week: 2, dir: 'Гео-карты',    task: 'Одинаковые название, адрес и телефон во всех справочниках', note: 'Расхождения – карты считают вас разными организациями' },
+  { n: 15, week: 2, dir: 'Бренд',        task: 'Разбор текущего брендбука и концепция нового', note: 'Нужен старый брендбук и логотип в исходниках' },
+  { n: 16, week: 2, dir: 'Дизайн',       task: 'Подобрать зелёный и показать на макете', note: 'Оттенок выбираем один раз сразу для сайта, брендбука и печати' },
+  { n: 17, week: 2, dir: 'Конфигураторы',task: 'Конфигуратор на следующую модель Zeekr', note: 'По доступности официальных рендеров: X, 001 или 007' },
+  { n: 18, week: 2, dir: 'Контент',      task: '8 статей', note: 'Темы по итогам замера спроса' },
+
+  { n: 19, week: 3, dir: 'Дизайн',       task: 'Зелёный вместо оранжевого на всём сайте', note: '12 мест в пяти файлах плюс логотип. Проверка всех 447 страниц и телефона' },
+  { n: 20, week: 3, dir: 'Бренд',        task: 'Брендбук: новая версия', note: 'Палитра, логотип в вариантах, шрифты, правила фото, примеры применения' },
+  { n: 21, week: 3, dir: 'Бренд',        task: 'Печать: папка, бейдж, визитка', note: 'Макеты под типографию: вылеты, CMYK, разрешение. Список печати подтверждаете вы' },
+  { n: 22, week: 3, dir: 'Конфигураторы',task: 'Ещё два конфигуратора Zeekr', note: '' },
+  { n: 23, week: 3, dir: 'Маркетинг',    task: 'Маркетинговые блоки на ключевые страницы', note: 'Доказательства на карточках, отзывы с именем и машиной, блок сервиса' },
+  { n: 24, week: 3, dir: 'SEO',          task: 'Данные о компании в машинном виде', note: 'Название, УНП, адрес, часы – чтобы ИИ-помощники называли вас' },
+  { n: 25, week: 3, dir: 'Ссылки',       task: 'Первые размещения по карте ссылок', note: 'Карточки организации, белорусские автоплощадки' },
+  { n: 26, week: 3, dir: 'Контент',      task: '8 статей', note: '' },
+
+  { n: 27, week: 4, dir: 'Маркетинг',    task: 'Доработка страниц по данным аналитики', note: 'Правим адресно: где заходы есть, а заявок нет' },
+  { n: 28, week: 4, dir: 'SEO',          task: 'Страницы под спрос, найденный при замере', note: 'Только там, где спрос подтверждён цифрой и странице есть что сказать' },
+  { n: 29, week: 4, dir: 'Конфигураторы',task: 'Добить модельный ряд Zeekr', note: '009 и 9X – только с прокси за 5–15 долларов, это чисто китайские модели' },
+  { n: 30, week: 4, dir: 'Контент',      task: 'План статей на декабрь, январь, февраль', note: 'После того, как видно, какие ноябрьские статьи вышли в поиск' },
+  { n: 31, week: 4, dir: 'Контент',      task: '9 статей', note: '' },
+  { n: 32, week: 4, dir: 'Отчёт',        task: 'Отчёт за ноябрь', note: 'Что сделано, что выросло, что не сработало – против точки отсчёта' },
+
+  { n: 33, week: 0, dir: 'Конфигураторы',task: 'Конфигуратор Zeekr 7X', done: true,
+    note: 'Четыре цвета официальными рендерами, машина меняется при выборе',
+    links: [{ t: 'Смотреть', u: 'https://evolutioncar.by/catalog/zeekr/7x/konfigurator/' }] },
+  { n: 34, week: 0, dir: 'Сайт',         task: 'Сертификат SSL на сайт, www и кабинет', done: true,
+    note: 'Let’s Encrypt до 1 февраля 2027. Автопродления нет – продлить в конце января' },
+  { n: 35, week: 0, dir: 'Каталог',      task: 'HiPhi Z снят с сайта', done: true,
+    note: 'Модель не выпускается. Восемь адресов переведены на раздел электромобилей' },
+  { n: 36, week: 0, dir: 'Маркетинг',    task: 'Черновик калькулятора цены под ключ', done: true,
+    note: 'Ждёт ваших ставок: пошлина, НДС, утильсбор, доставка, сертификация, ваша работа',
+    links: [{ t: 'Открыть', u: '../kalkulyator/' }] },
+  { n: 37, week: 0, dir: 'Конфигураторы',task: 'ТЗ для нейросети на рендеры 9X', done: true,
+    note: 'Цвета, диски и салон из конфигуратора Zeekr, готовые промты',
+    links: [{ t: 'Открыть', u: '../gpt-image/' }] },
+];
+
+const KEY = 'evcar-zadachi-noyabr';
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
+const save = (s) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} };
+let state = load();
+let sortBy = 'n', sortDir = 1;
+
+const weekLabel = (w) => w === 0 ? 'сделано' : 'неделя ' + w;
+const isDone = (t) => state[t.n]?.done ?? !!t.done;
+const noteOf = (t) => state[t.n]?.note ?? '';
+
+const $ = (id) => document.getElementById(id);
+
+function fillSelects() {
+  const weeks = [...new Set(TASKS.map((t) => t.week))].sort();
+  for (const w of weeks) {
+    const o = document.createElement('option');
+    o.value = w; o.textContent = weekLabel(w).replace(/^н/, 'Н');
+    $('fw').append(o);
+  }
+  for (const d of [...new Set(TASKS.map((t) => t.dir))].sort()) {
+    const o = document.createElement('option');
+    o.value = d; o.textContent = d;
+    $('fd').append(o);
+  }
+}
+
+function visible() {
+  const q = $('q').value.trim().toLowerCase();
+  const w = $('fw').value, d = $('fd').value, s = $('fs').value;
+  return TASKS.filter((t) => {
+    if (w !== '' && String(t.week) !== w) return false;
+    if (d !== '' && t.dir !== d) return false;
+    if (s === 'yes' && !isDone(t)) return false;
+    if (s === 'no' && isDone(t)) return false;
+    if (q && !(t.task + ' ' + t.dir + ' ' + (t.note || '') + ' ' + noteOf(t)).toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a, b) => {
+    let x, y;
+    if (sortBy === 'done') { x = isDone(a) ? 1 : 0; y = isDone(b) ? 1 : 0; }
+    else if (sortBy === 'task' || sortBy === 'dir') { x = a[sortBy].toLowerCase(); y = b[sortBy].toLowerCase(); }
+    else { x = a[sortBy]; y = b[sortBy]; }
+    if (x < y) return -1 * sortDir;
+    if (x > y) return 1 * sortDir;
+    return a.n - b.n;
+  });
+}
+
+function draw() {
+  const list = visible();
+  const tb = $('rows');
+  tb.innerHTML = '';
+  for (const t of list) {
+    const tr = document.createElement('tr');
+    if (isDone(t)) tr.className = 'is-done';
+
+    const links = (t.links || []).map((l) => `<a href="${l.u}" target="_blank" rel="noopener">${l.t} ↗</a>`).join('');
+
+    tr.innerHTML = `
+      <td class="c-num">${t.n}</td>
+      <td class="c-chk"><input type="checkbox" data-n="${t.n}" ${isDone(t) ? 'checked' : ''} aria-label="сделано"></td>
+      <td class="c-week"><span class="week-chip">${weekLabel(t.week)}</span></td>
+      <td class="c-dir"><span class="dir-chip">${t.dir}</span></td>
+      <td class="c-task"><div class="task">${t.task}${t.note ? `<small>${t.note}</small>` : ''}</div></td>
+      <td class="c-note">
+        ${links ? `<div class="links">${links}</div>` : ''}
+        <textarea class="note" data-n="${t.n}" rows="1" placeholder="ссылка на результат, заметка…">${noteOf(t)}</textarea>
+      </td>`;
+    tb.append(tr);
+  }
+  $('empty').hidden = list.length > 0;
+
+  const planned = TASKS.filter((t) => t.week > 0);
+  const done = planned.filter(isDone).length;
+  const pct = planned.length ? Math.round(done / planned.length * 100) : 0;
+  $('fill').style.width = pct + '%';
+  $('ptxt').innerHTML = `сделано <b>${done}</b> из <b>${planned.length}</b> задач месяца · ${pct}%`;
+}
+
+document.addEventListener('change', (e) => {
+  const cb = e.target.closest('input[type=checkbox][data-n]');
+  if (!cb) return;
+  const n = cb.dataset.n;
+  state[n] = { ...(state[n] || {}), done: cb.checked };
+  save(state);
+  draw();
+});
+
+document.addEventListener('input', (e) => {
+  const ta = e.target.closest('textarea.note[data-n]');
+  if (!ta) return;
+  const n = ta.dataset.n;
+  state[n] = { ...(state[n] || {}), note: ta.value };
+  save(state);
+  // высота по содержимому, без перерисовки таблицы
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 220) + 'px';
+});
+
+for (const id of ['q', 'fw', 'fd', 'fs']) {
+  $(id).addEventListener('input', draw);
+  $(id).addEventListener('change', draw);
+}
+
+document.querySelectorAll('th[data-sort]').forEach((th) => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    sortDir = sortBy === k ? -sortDir : 1;
+    sortBy = k;
+    draw();
+  });
+});
+
+$('copy').addEventListener('click', async () => {
+  const lines = ['Задачи Evolution Car, ноябрь – статус на ' + new Date().toLocaleDateString('ru-RU'), ''];
+  for (const w of [1, 2, 3, 4]) {
+    const inWeek = TASKS.filter((t) => t.week === w);
+    if (!inWeek.length) continue;
+    lines.push(`Неделя ${w}:`);
+    for (const t of inWeek) {
+      const mark = isDone(t) ? '[x]' : '[ ]';
+      const my = noteOf(t) ? '  – ' + noteOf(t).replace(/\s+/g, ' ') : '';
+      lines.push(`  ${mark} ${t.task}${my}`);
+    }
+    lines.push('');
+  }
+  const planned = TASKS.filter((t) => t.week > 0);
+  lines.push(`Итого: ${planned.filter(isDone).length} из ${planned.length}`);
+  const text = lines.join('\n');
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.append(ta); ta.select();
+    try { document.execCommand('copy'); } catch (err) {}
+    ta.remove();
+  }
+  const b = $('copy'); const was = b.textContent;
+  b.textContent = 'Скопировано'; b.classList.add('done');
+  setTimeout(() => { b.textContent = was; b.classList.remove('done'); }, 1600);
+});
+
+$('reset').addEventListener('click', () => {
+  if (!confirm('Сбросить все галочки и комментарии в этом браузере?')) return;
+  state = {}; save(state); draw();
+});
+
+fillSelects();
+draw();
+</script>
+</body>
+</html>

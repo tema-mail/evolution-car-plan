@@ -87,6 +87,11 @@
   .q ol{margin:10px 0 0;padding-left:20px}
   .q li{margin:0 0 9px}
   footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 24px}
+  .tabs a{padding:9px 15px;border-radius:10px;text-decoration:none;color:var(--ink);font-size:14.5px;
+          background:rgba(255,255,255,.04);border:1px solid var(--line)}
+  .tabs a:hover{border-color:rgba(255,255,255,.3)}
+  .tabs a.on{background:rgba(201,162,39,.12);border-color:var(--gold);color:var(--gold);font-weight:600}
 </style>
 </head>
 <body>
@@ -98,6 +103,15 @@
   <p class="sub">Собран на примере Zeekr 9X. Все ставки открыты для правки – впиши свои
   и проверь на сделке, которую считал руками. Когда цифры сойдутся, я поставлю это на сайт.</p>
 </header>
+
+<nav class="tabs">
+  <a href="../noyabr/">План на ноябрь</a>
+  <a href="../zadachi/">Задачи</a>
+  <a href="../">Квартал</a>
+  <a class="on" href="../kalkulyator/">Калькулятор</a>
+  <a href="../gpt-image/">ТЗ для нейросети</a>
+</nav>
+
 
 <div class="warn">
   <p><b>Почему ставки не зашиты наглухо.</b> Я искал их в открытых источниках – и они

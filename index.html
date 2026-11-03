@@ -85,6 +85,11 @@
   ul.clean li::before{content:'–'; position:absolute; left:4px; color:var(--gold)}
 
   footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); color:var(--mute); font-size:14px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 24px}
+  .tabs a{padding:9px 15px;border-radius:10px;text-decoration:none;color:var(--ink);font-size:14.5px;
+          background:rgba(255,255,255,.04);border:1px solid var(--line)}
+  .tabs a:hover{border-color:rgba(255,255,255,.3)}
+  .tabs a.on{background:rgba(201,162,39,.12);border-color:var(--gold);color:var(--gold);font-weight:600}
 </style>
 </head>
 <body>
@@ -98,6 +103,15 @@
   <p class="meta">Составлен 3 ноября 2026. Цифры спроса – из Google Search Console за 3 месяца
   и Яндекс Вебмастера, дата съёма указана у каждой.</p>
 </header>
+
+<nav class="tabs">
+  <a href="noyabr/">План на ноябрь</a>
+  <a href="zadachi/">Задачи</a>
+  <a class="on" href="./">Квартал</a>
+  <a href="kalkulyator/">Калькулятор</a>
+  <a href="gpt-image/">ТЗ для нейросети</a>
+</nav>
+
 
 <nav class="toc">
   <b>Содержание</b>

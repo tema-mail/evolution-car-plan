@@ -74,6 +74,12 @@
   ul.clean li{padding-left:22px;position:relative;margin:0 0 9px}
   ul.clean li::before{content:'–';position:absolute;left:4px;color:var(--gold)}
 
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 24px}
+  .tabs a{padding:9px 15px;border-radius:10px;text-decoration:none;color:var(--ink);font-size:14.5px;
+          background:rgba(255,255,255,.04);border:1px solid var(--line)}
+  .tabs a:hover{border-color:rgba(255,255,255,.3)}
+  .tabs a.on{background:rgba(201,162,39,.12);border-color:var(--gold);color:var(--gold);font-weight:600}
+
   a{color:var(--gold)}
   footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
 </style>
@@ -88,6 +94,15 @@
   бренд и печать, аналитика рекламы и ссылок, гео-карты. С причиной по каждому пункту и списком
   того, что нужно от вас.</p>
 </header>
+
+<nav class="tabs">
+  <a class="on" href="../noyabr/">План на ноябрь</a>
+  <a href="../zadachi/">Задачи</a>
+  <a href="../">Квартал</a>
+  <a href="../kalkulyator/">Калькулятор</a>
+  <a href="../gpt-image/">ТЗ для нейросети</a>
+</nav>
+
 
 <nav class="toc">
   <b>Содержание</b>
