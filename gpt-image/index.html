@@ -57,6 +57,15 @@
   ol.check{padding-left:22px;margin:14px 0}
   ol.check li{margin:0 0 11px}
 
+  .wheels{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin:18px 0}
+  .wheels figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+                 padding:12px;text-align:center}
+  .wheels img{width:100%;max-width:150px;height:auto;background:#fff;border-radius:10px;display:block;margin:0 auto 10px}
+  .wheels figcaption{font-size:13px;line-height:1.5;color:var(--mute);text-align:left}
+  .wheels figcaption b{color:var(--ink);display:block;margin-bottom:5px;font-size:14px}
+  .wheels code{display:block;background:var(--panel-2);padding:6px 8px;border-radius:7px;
+               font-size:11.5px;margin-top:5px;word-break:break-word;white-space:normal}
+
   a{color:var(--gold)}
   footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
 </style>
@@ -116,9 +125,39 @@
   </tbody>
 </table>
 
-<h3>Диски и кузов</h3>
+<h3>Диски – пять рисунков</h3>
+<p class="hint">Это настоящие картинки дисков 9X из конфигуратора, не похожие и не придуманные.
+Подпись под каждым – готовое описание для промта: вставлять в строку про колёса.</p>
+
+<div class="wheels">
+  <figure><img src="diski/w1.webp" alt="Чёрные многоспицевые диски Zeekr 9X">
+    <figcaption><b>1. Чёрные многоспицевые</b><br>
+    <code>glossy black multi-spoke alloy wheels with thin twin spokes</code></figcaption></figure>
+  <figure><img src="diski/w2.webp" alt="Чёрные турбинные диски Zeekr 9X">
+    <figcaption><b>2. Чёрные турбинные</b><br>
+    <code>black turbine-style wheels with many narrow radial slots</code></figcaption></figure>
+  <figure><img src="diski/w3.webp" alt="Тёмно-серые турбинные диски Zeekr 9X">
+    <figcaption><b>3. Тёмно-серые турбинные</b><br>
+    <code>dark grey turbine-style wheels with narrow radial slots</code></figcaption></figure>
+  <figure><img src="diski/w4.webp" alt="Серебристые аэродинамические диски Zeekr 9X">
+    <figcaption><b>4. Серебристые аэро</b><br>
+    <code>silver aerodynamic wheels with large curved cut-outs</code></figcaption></figure>
+  <figure><img src="diski/w5.webp" alt="Светло-серые закрытые аэродиски Zeekr 9X">
+    <figcaption><b>5. Закрытые аэро</b><br>
+    <code>light grey closed aero wheel covers with Zeekr lettering</code></figcaption></figure>
+</div>
+
+<div class="note">
+  <p><b>Где посмотреть самому:</b> конфигуратор
+  <a href="https://auto-china.com/en/zeekr-9x/config">auto-china.com/en/zeekr-9x/config</a>,
+  раздел Wheels. Там же цена европейской версии Hyper Edition – <b>99 920 €</b>, и допы:
+  одобрение для ЕС 1 500 €, гарантия и обслуживание 5 000 €, доставка 3 500 €,
+  зарядный адаптер 950 €, салон Glimmering Night Gold +6 140 €.</p>
+</div>
+
+<h3>Кузов</h3>
 <ul class="clean">
-  <li><b>Диски 22 дюйма</b>, три рисунка: многоспицевые, затемнённые и закрытые дисковые. Есть кованые моноблоки.</li>
+  <li><b>Диски 22 дюйма.</b> Названий у рисунков в открытом доступе нет – поэтому в промте описываем вид словами, как выше.</li>
   <li><b>Кузов:</b> полноразмерный SUV, шесть мест по схеме 2+2+2 (есть и пятиместная версия).</li>
   <li><b>Приметы салона для кадров интерьера:</b> два экрана по 16 дюймов спереди, 17-дюймовый экран на потолке для задних пассажиров, проекция на лобовое стекло 47 дюймов.</li>
 </ul>
