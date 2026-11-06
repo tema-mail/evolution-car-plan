@@ -24,6 +24,18 @@
   .voice b{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-bottom:12px}
   .voice audio{width:100%}
   .voice p{color:var(--mute);font-size:14px;margin:12px 0 0}
+  .itog{background:linear-gradient(180deg,rgba(76,175,125,.08),rgba(76,175,125,0)) ,var(--panel);
+        border:1px solid rgba(76,175,125,.32);border-radius:16px;padding:22px 20px;margin:0 0 30px}
+  .itog b.lbl{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ok);margin-bottom:14px}
+  .ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:12px;margin:0 0 16px}
+  .ba div{background:var(--panel-2);border:1px solid var(--line);border-radius:13px;padding:14px}
+  .ba .was{color:var(--mute);font-size:14px;text-decoration:line-through;text-decoration-color:rgba(224,92,92,.7)}
+  .ba .now{font-size:clamp(21px,3.1vw,27px);font-weight:700;color:var(--ok);line-height:1.15;letter-spacing:-.02em;margin:2px 0 4px}
+  .ba .cap{color:var(--mute);font-size:13px}
+  .done{margin:0;padding:0;list-style:none}
+  .done li{position:relative;padding-left:26px;margin:0 0 9px;font-size:15px}
+  .done li::before{content:"✓";position:absolute;left:0;top:0;color:var(--ok);font-weight:700}
+  .done li b{font-weight:600}
   nav.toc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 36px}
   nav.toc b{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin-bottom:12px}
   nav.toc ol{margin:0;padding-left:20px;columns:2;column-gap:28px}
@@ -75,9 +87,37 @@
   <p>Если слушать некогда – ниже то же самое таблицами.</p>
 </div>
 
+<div class="itog">
+  <b class="lbl">Итог: сделано и выложено на боевой, 7 ноября</b>
+  <div class="ba">
+    <div><div class="was">было 31</div><div class="now">57</div><div class="cap">балл на телефоне<br>+84%</div></div>
+    <div><div class="was">было 7 571 КБ</div><div class="now">3 380 КБ</div><div class="cap">вес страницы<br>в 2,2 раза легче</div></div>
+    <div><div class="was">было 5,5 с</div><div class="now">2,9 с</div><div class="cap">главный кадр<br>зелёная зона Google</div></div>
+    <div><div class="was">было 5,2 с</div><div class="now">2,7 с</div><div class="cap">первый кадр<br>вдвое быстрее</div></div>
+    <div><div class="was">было 4 370 мс</div><div class="now">1 520 мс</div><div class="cap">блокировка потока<br>в 2,9 раза меньше</div></div>
+    <div><div class="was">было 11,2 МБ</div><div class="now">0,6 МБ</div><div class="cap">картинки сайта<br>в 18 раз меньше</div></div>
+  </div>
+  <ul class="done">
+    <li><b>16 картинок переведены в webp</b> нужного размера – карточки направлений, преимущества,
+    галерея «пригнали», фон блока заявки, плитки меню, логотип.</li>
+    <li><b>Ещё 4 файла нашла и починила новая проверка:</b> фон партнёрам 460 → 55 КБ,
+    кадр первого экрана 446 → 122 КБ, три кадра галерей пережаты.</li>
+    <li><b>Миниатюры в кабинете стали ленивыми</b> – страница списка грузила 16 МБ сразу.</li>
+    <li><b>Проверка встроена в выкладку:</b> тяжёлая картинка больше не уедет на сайт –
+    заливка падает и показывает список.</li>
+    <li><b>Правило записано в стандарт проекта</b>, чтобы та же ошибка не повторилась на следующем сайте.</li>
+  </ul>
+  <p style="color:var(--mute);font-size:14.5px;margin:16px 0 0">Честно о том, что НЕ поправлено:
+  остаток держат чужие скрипты из контейнера GTM (1 264 КБ и 1 520 мс) и видео первого экрана
+  1 605 КБ. Первое – <a href="#reshit">твоё решение</a>, второе моя часть, сделаю.
+  Доступность, лучшие практики и SEO правками картинок не двигаются – там свои причины,
+  они разобраны ниже.</p>
+</div>
+
 <nav class="toc">
   <b>Содержание</b>
   <ol>
+    <li><a href="#sdelano">Что мы подняли: было и стало</a></li>
     <li><a href="#chto-takoe">Что такое эти 100% на самом деле</a></li>
     <li><a href="#bally">Баллы по двум сайтам</a></li>
     <li><a href="#minsk">Минск: откуда 31 балл</a></li>
