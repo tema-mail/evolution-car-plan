@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Почему не 100%: разбор скорости</title>
+<meta name="description" content="Разбор PageSpeed по evolutioncar.by и evolutioncarservice.ru: откуда баллы, что наша вина, что чужие скрипты, что уже исправлено.">
+<style>
+  :root{
+    --bg:#0e1016; --panel:#161922; --panel-2:#1c2029; --line:rgba(255,255,255,.1);
+    --ink:#eceef2; --mute:#9096a3; --gold:#c9a227; --ok:#4caf7d; --warn:#e0a33c; --bad:#e05c5c;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px 80px}
+  header{padding:44px 0 26px;border-bottom:1px solid var(--line);margin-bottom:30px}
+  .kicker{color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin:0 0 10px}
+  h1{font-size:clamp(28px,4.8vw,44px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
+  .sub{color:var(--mute);margin:0;max-width:66ch}
+  .voice{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:26px 0 34px}
+  .voice b{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-bottom:12px}
+  .voice audio{width:100%}
+  .voice p{color:var(--mute);font-size:14px;margin:12px 0 0}
+  nav.toc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 36px}
+  nav.toc b{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin-bottom:12px}
+  nav.toc ol{margin:0;padding-left:20px;columns:2;column-gap:28px}
+  @media(max-width:640px){nav.toc ol{columns:1}}
+  nav.toc li{margin:0 0 7px;break-inside:avoid}
+  nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+  nav.toc a:hover{border-bottom-color:var(--gold);color:var(--gold)}
+  h2{font-size:clamp(21px,3vw,29px);margin:52px 0 6px;letter-spacing:-.01em;scroll-margin-top:18px}
+  h2 .num{color:var(--gold);margin-right:10px}
+  h2 + .hint{color:var(--mute);margin:0 0 20px;max-width:72ch;font-size:15.5px}
+  h3{font-size:17.5px;margin:28px 0 10px}
+  p{max-width:74ch}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;margin:22px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .card .big{font-size:clamp(22px,3.2vw,29px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+  .card .cap{color:var(--mute);font-size:13.5px;margin-top:5px}
+  .card.ok .big{color:var(--ok)} .card.warn .big{color:var(--warn)} .card.bad .big{color:var(--bad)}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin:0 0 16px}
+  .box h3{margin-top:0}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;display:block;overflow-x:auto}
+  @media(min-width:760px){table{display:table}}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mute);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+  td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tag{display:inline-block;border-radius:7px;padding:3px 8px;font-size:12.5px;font-weight:600;white-space:nowrap}
+  .tag.our{background:rgba(224,92,92,.14);color:#f08f8f;border:1px solid rgba(224,92,92,.3)}
+  .tag.not{background:rgba(224,163,60,.14);color:#edc07a;border:1px solid rgba(224,163,60,.3)}
+  .tag.fix{background:rgba(76,175,125,.14);color:#7fd0a8;border:1px solid rgba(76,175,125,.3)}
+  ul{padding-left:22px;max-width:74ch} li{margin:0 0 8px}
+  .note{border-left:3px solid var(--gold);background:var(--panel-2);padding:14px 16px;border-radius:0 12px 12px 0;margin:20px 0;max-width:74ch}
+  .note b{color:var(--gold)}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+  a{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kicker">Разбор · 7 ноября 2026</p>
+  <h1>Почему не везде 100%</h1>
+  <p class="sub">Два сайта, замер Lighthouse 12.6 по живым страницам. Что в баллах наша вина,
+  что чужие скрипты, что уже исправлено и что нужно решить тебе.</p>
+</header>
+
+<div class="voice">
+  <b>Голосом, 2 минуты</b>
+  <audio controls preload="metadata" src="itog.mp3"></audio>
+  <p>Если слушать некогда – ниже то же самое таблицами.</p>
+</div>
+
+<nav class="toc">
+  <b>Содержание</b>
+  <ol>
+    <li><a href="#chto-takoe">Что такое эти 100% на самом деле</a></li>
+    <li><a href="#bally">Баллы по двум сайтам</a></li>
+    <li><a href="#minsk">Минск: откуда 31 балл</a></li>
+    <li><a href="#chuzhie">Чужие скрипты: 1,3 МБ и 1,7 секунды</a></li>
+    <li><a href="#sdelano">Что уже сделано</a></li>
+    <li><a href="#nsk">Новосибирск: одна причина на 11 МБ</a></li>
+    <li><a href="#reshit">Что решить тебе</a></li>
+    <li><a href="#pravilo">Чтобы не повторялось</a></li>
+  </ol>
+</nav>
+
+<h2 id="chto-takoe"><span class="num">1</span>Что такое эти 100% на самом деле</h2>
+<p class="hint">Главное недоразумение: в PageSpeed четыре разных оценки, и только одна из них про скорость.</p>
+
+<p>Раздел «Производительность» – это <b>не оценка качества сайта</b>. Это замер скорости
+на нарочно медленном телефоне: Google замедляет процессор в четыре раза и ставит медленный
+мобильный интернет. Поэтому один и тот же сайт даёт 86 баллов на компьютере и 31 на телефоне –
+это не два разных сайта, это два разных стенда.</p>
+
+<p>Остальные три раздела – «Доступность», «Лучшие практики» и «SEO» – от скорости интернета
+не зависят. Там 100 держать можно и нужно. И планка не выдуманная: у сайта в Новосибирске
+сейчас <b>100 из 100</b> и по лучшим практикам, и по поиску.</p>
+
+<div class="note">
+  <b>Короткий вывод.</b> По трём разделам из четырёх цель «всегда 100» правильная и достижимая.
+  По скорости на телефоне 100 баллов означает сайт без рекламных и аналитических скриптов –
+  это решение про бизнес, а не про код.
+</div>
+
+<h2 id="bally"><span class="num">2</span>Баллы по двум сайтам</h2>
+<p class="hint">Замер 7 ноября 2026, Lighthouse 12.6, по живым страницам. Публичный PageSpeed в тот
+момент отдавал отказ по квоте, поэтому замер свой – методика та же.</p>
+
+<table>
+  <thead><tr><th>Раздел</th><th>evolutioncar.by<br>телефон</th><th>evolutioncar.by<br>компьютер</th><th>evolutioncarservice.ru<br>телефон</th></tr></thead>
+  <tbody>
+    <tr><td>Производительность</td><td class="n" style="color:#e05c5c">31</td><td class="n" style="color:#e0a33c">86</td><td class="n" style="color:#e0a33c">66</td></tr>
+    <tr><td>Доступность</td><td class="n">95</td><td class="n">92</td><td class="n">96</td></tr>
+    <tr><td>Лучшие практики</td><td class="n" style="color:#e05c5c">61</td><td class="n" style="color:#e05c5c">59</td><td class="n" style="color:#4caf7d">100</td></tr>
+    <tr><td>SEO</td><td class="n">85</td><td class="n">85</td><td class="n" style="color:#4caf7d">100</td></tr>
+  </tbody>
+</table>
+
+<p>Разница между сайтами говорит сама за себя: там, где нет Тег Менеджера и виджета Битрикса, –
+сразу 100 по практикам и по поиску. Вся разница в этих двух строчках не в качестве вёрстки.</p>
+
+<h2 id="minsk"><span class="num">3</span>Минск: откуда 31 балл</h2>
+<p class="hint">Балл складывается из пяти метрик с весами. Две из них провалены полностью.</p>
+
+<div class="cards">
+  <div class="card bad"><div class="big">4 370 мс</div><div class="cap">поток заблокирован<br>цель – меньше 200</div></div>
+  <div class="card bad"><div class="big">5,5 с</div><div class="cap">главный кадр<br>цель – меньше 2,5</div></div>
+  <div class="card warn"><div class="big">11,1 с</div><div class="cap">индекс скорости</div></div>
+  <div class="card ok"><div class="big">0,002</div><div class="cap">скачки вёрстки –<br>это 100 из 100</div></div>
+</div>
+
+<p>Вёрстка не прыгает вообще – там идеал. Провалено то, что связано с весом страницы
+и с чужим кодом. Страница на телефоне весила <b>7,5 МБ</b>:</p>
+
+<table>
+  <thead><tr><th>Что</th><th>Сколько</th><th>Чьё</th></tr></thead>
+  <tbody>
+    <tr><td>Картинки (19 файлов)</td><td class="n">4 577 КБ</td><td><span class="tag our">наше</span></td></tr>
+    <tr><td>Видео на первом экране</td><td class="n">1 605 КБ</td><td><span class="tag our">наше</span></td></tr>
+    <tr><td>Скрипты (34 файла)</td><td class="n">1 191 КБ</td><td><span class="tag not">почти всё чужое</span></td></tr>
+    <tr><td>Шрифты</td><td class="n">125 КБ</td><td>Google Fonts</td></tr>
+    <tr><td>Стили</td><td class="n">33 КБ</td><td><span class="tag our">наше</span></td></tr>
+  </tbody>
+</table>
+
+<h3>Наша вина: картинки прямо с Тильды</h3>
+<p>При переносе картинки приехали как были – в PNG, в полном размере, хотя на странице
+показываются в разы меньше. Пять файлов на главной:</p>
+
+<table>
+  <thead><tr><th>Файл</th><th>Весил</th><th>Лишнего</th></tr></thead>
+  <tbody>
+    <tr><td>Group_1171275070.png</td><td class="n">1 778 КБ</td><td class="n">68%</td></tr>
+    <tr><td>Frame_1171275438.png</td><td class="n">836 КБ</td><td class="n">71%</td></tr>
+    <tr><td>Frame_1171275437.png</td><td class="n">664 КБ</td><td class="n">9%</td></tr>
+    <tr><td>Frame_1171275476.png</td><td class="n">614 КБ</td><td class="n">71%</td></tr>
+    <tr><td>Frame_1171275436.png</td><td class="n">570 КБ</td><td class="n">9%</td></tr>
+  </tbody>
+</table>
+
+<h2 id="chuzhie"><span class="num">4</span>Чужие скрипты: 1,3 МБ и 1,7 секунды</h2>
+<p class="hint">Главная причина 4 370 мс блокировки. Ни одного из этих адресов нет в нашем репозитории –
+я проверил поиском по всему коду.</p>
+
+<table>
+  <thead><tr><th>Кто</th><th>Вес</th><th>Держит поток</th><th>Откуда взялся</th></tr></thead>
+  <tbody>
+    <tr><td>botfaqtor.ru</td><td class="n">97 КБ</td><td class="n" style="color:#e05c5c">975 мс</td><td>антифрод рекламы, через Тег Менеджер</td></tr>
+    <tr><td>Google Tag Manager</td><td class="n">691 КБ</td><td class="n" style="color:#e05c5c">608 мс</td><td>наш контейнер GTM-PRHR43Z7</td></tr>
+    <tr><td>bitrix24.by</td><td class="n">210 КБ</td><td class="n">53 мс</td><td>виджет чата и форм</td></tr>
+    <tr><td>Яндекс.Метрика</td><td class="n">95 КБ</td><td class="n">39 мс</td><td>счётчик 98499004</td></tr>
+    <tr><td>Google Fonts</td><td class="n">126 КБ</td><td class="n">0 мс</td><td>шрифт сайта</td></tr>
+    <tr><td>mail.ru</td><td class="n">47 КБ</td><td class="n">0 мс</td><td>через Тег Менеджер</td></tr>
+    <tr><td>call-tracking.by</td><td class="n">27 КБ</td><td class="n">0 мс</td><td>через Тег Менеджер</td></tr>
+  </tbody>
+</table>
+
+<p><b>Botfaqtor к тому же работает по устаревшей технологии</b> – синхронный запрос в главном потоке.
+Из-за него же сайт теряет баллы в «Лучших практиках»: Chrome помечает это как устаревший API.
+Сами мы это починить не можем – это их код.</p>
+
+<div class="note">
+  <b>Отсюда и 61 балл в «Лучших практиках».</b> Он складывается из трёх вещей, и все три –
+  следствие внешних решений: 14 сторонних cookie (Битрикс, Google, mail.ru), устаревший API
+  у botfaqtor и предупреждения Chrome про cookie Метрики. Напоминаю: по cookie действует
+  твоё решение от 4 ноября – баннер уведомительный, аналитика грузится всем.
+</div>
+
+<h2 id="sdelano"><span class="num">5</span>Что уже сделано</h2>
+<p class="hint">Сделал сразу, не дожидаясь разговора, потому что это однозначно наша часть.</p>
+
+<div class="box">
+  <h3>16 картинок переведены в webp <span class="tag fix">готово, ждёт выкладки</span></h3>
+  <p>Карточки направлений, преимущества, галерея «пригнали», фон финального блока, плитки меню,
+  логотип. Ширина – не больше исходной и не больше 1400 px, качество 80.</p>
+  <table>
+    <thead><tr><th>Файл</th><th>Было</th><th>Стало</th></tr></thead>
+    <tbody>
+      <tr><td>image.png (фон блока заявки)</td><td class="n">2 080 КБ</td><td class="n" style="color:#4caf7d">117 КБ</td></tr>
+      <tr><td>IMG_4961_1 (сервис)</td><td class="n">2 264 КБ</td><td class="n" style="color:#4caf7d">204 КБ</td></tr>
+      <tr><td>Group_1171275070</td><td class="n">1 778 КБ</td><td class="n" style="color:#4caf7d">69 КБ</td></tr>
+      <tr><td>Frame_1000005715</td><td class="n">1 400 КБ</td><td class="n" style="color:#4caf7d">120 КБ</td></tr>
+      <tr><td>Логотип в шапке</td><td class="n">16 КБ</td><td class="n" style="color:#4caf7d">2,8 КБ</td></tr>
+      <tr><td><b>Все 16 файлов</b></td><td class="n"><b>11 200 КБ</b></td><td class="n" style="color:#4caf7d"><b>600 КБ</b></td></tr>
+    </tbody>
+  </table>
+  <p>Картинки главной в сборке: <b>3 836 → 1 568 КБ</b>. Проверено: 458 страниц собираются,
+  битых путей нет, старые PNG оставлены на диске – откат в одну строку.</p>
+  <p style="color:#edc07a"><b>На боевом этого пока нет:</b> сервер, через который идёт заливка,
+  закрывает соединение, а напрямую с моего компьютера хостинг не отвечает. Выложу, как только
+  связь поднимется – правка уже в репозитории, коммит 1c19166.</p>
+</div>
+
+<h2 id="nsk"><span class="num">6</span>Новосибирск: одна причина на 11 МБ</h2>
+<p class="hint">evolutioncarservice.ru, телефон. Тут всё проще – и хуже по одному пункту.</p>
+
+<div class="cards">
+  <div class="card ok"><div class="big">100</div><div class="cap">лучшие практики</div></div>
+  <div class="card ok"><div class="big">100</div><div class="cap">SEO</div></div>
+  <div class="card ok"><div class="big">0 мс</div><div class="cap">блокировка потока</div></div>
+  <div class="card bad"><div class="big">18,7 с</div><div class="cap">главный кадр</div></div>
+</div>
+
+<p>Чужих скриптов нет вообще, кроме шрифтов – поэтому 100 и 100. Блокировки потока ноль,
+скачков вёрстки ноль. Производительность 66 держит <b>ровно одна</b> вещь: пять картинок
+на 11,3 МБ, и самая тяжёлая из них – фон первого экрана, то есть именно то, что человек
+ждёт в первую секунду.</p>
+
+<table>
+  <thead><tr><th>Файл</th><th>Вес</th><th>Что это</th></tr></thead>
+  <tbody>
+    <tr><td>hero-bg.png</td><td class="n" style="color:#e05c5c">3 224 КБ</td><td>фон первого экрана, он же главный кадр</td></tr>
+    <tr><td>promo-split.png</td><td class="n">2 153 КБ</td><td>блок акции</td></tr>
+    <tr><td>maintenance.png</td><td class="n">2 115 КБ</td><td>обслуживание</td></tr>
+    <tr><td>diagnostics.png</td><td class="n">2 040 КБ</td><td>диагностика</td></tr>
+    <tr><td>russify.png</td><td class="n">1 800 КБ</td><td>русификация</td></tr>
+  </tbody>
+</table>
+
+<p>Лечится тем же способом и примерно за час: webp плюс нужный размер, 11,3 МБ превратятся
+в 0,6–0,8 МБ. Производительность уйдёт с 66 в район 95. <b>Не делал – это другой проект
+и другой чат</b>, в этом чате по твоему правилу работаем только по Минску. Скажи слово –
+и я сделаю там тем же скриптом.</p>
+
+<h2 id="reshit"><span class="num">7</span>Что решить тебе</h2>
+<p class="hint">Три вопроса, которые я не могу закрыть за тебя, потому что это не код, а деньги и бренд.</p>
+
+<div class="box">
+  <h3>1. Чистить ли контейнер Тег Менеджера</h3>
+  <p>Нужны ли на сайте botfaqtor, call-tracking.by и mail.ru. Botfaqtor один держит телефон
+  975 мс – это четверть всей проблемы. Если реклама без антифрода не идёт, оставляем и
+  принимаем, что 100 баллов по скорости на телефоне не будет никогда.</p>
+  <p><b>Что меняется:</b> с чистым контейнером выходим на 90+, с текущим максимум около 80.</p>
+</div>
+
+<div class="box">
+  <h3>2. Виджет Битрикса</h3>
+  <p>210 КБ, 14 сторонних cookie, ссылки без адресов – из-за него же минус балл в SEO.
+  Он приносит заявки прямо в портал, поэтому выключать его я без тебя не буду. Можно
+  подгружать его не сразу, а по первому движению человека – скорость выиграет, заявки нет.</p>
+</div>
+
+<div class="box">
+  <h3>3. Контраст кнопок</h3>
+  <p>Единственное, что держит доступность на 95 вместо 100: белый текст на брендовом оранжевом
+  не дотягивает до нормы контраста. Лечится затемнением оранжевого на пару тонов. Это
+  вмешательство в фирменный цвет – решаешь ты. Заодно это тот же цвет, который по плану
+  меняем на зелёный, так что логично сделать за один раз.</p>
+</div>
+
+<p>Мелочи, которые сделаю сам, без вопросов: кэш для статики (44 файла сейчас без правил
+хранения), видео первого экрана 4,1 МБ – подгружать позже и сжать, порядок заголовков
+в блоке преимуществ, строка <code>LLM-Index</code> в robots.txt – Lighthouse считает её
+ошибкой, хотя файл для ИИ остаётся на месте.</p>
+
+<h2 id="pravilo"><span class="num">8</span>Чтобы не повторялось</h2>
+<p class="hint">По твоему правилу «одна ошибка – один раз»: ошибка одна и та же на двух сайтах,
+значит дело не в сайтах, а в отсутствии проверки.</p>
+
+<ul>
+  <li><b>Правило.</b> Ни одна картинка не уходит на сайт в PNG или JPG из источника.
+  Только webp, ширина не больше той, в которой картинка реально показывается.</li>
+  <li><b>Проверка, которая ловит сама.</b> Перед выкладкой считать вес страницы и падать,
+  если он больше полутора мегабайт или если в сборке есть картинка тяжелее 300 КБ.
+  Это тот же шаг, который уже ловит чужой домен в сборке.</li>
+  <li><b>Замер.</b> Lighthouse прогоняется перед боем, а не после вопроса «что за хуйня».</li>
+</ul>
+
+<footer>
+  Замер: Lighthouse 12.6, 7 ноября 2026, живые страницы evolutioncar.by и evolutioncarservice.ru.
+  Публичный PageSpeed в момент замера отдавал отказ по квоте – методика та же, стенд свой.
+  План месяца: <a href="../noyabr/">ноябрь</a> · <a href="../zadachi/">задачи</a> · <a href="../">квартал</a>
+</footer>
+
+</div>
+</body>
+</html>
